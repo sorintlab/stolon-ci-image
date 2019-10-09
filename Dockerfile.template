@@ -1,0 +1,16 @@
+FROM postgres:${PGVERSION}
+
+RUN useradd -ms /bin/bash stolon
+
+RUN apt-get update && apt-get install -y curl tar unzip
+
+USER stolon
+
+WORKDIR /home/stolon
+
+RUN curl -L https://github.com/coreos/etcd/releases/download/v3.3.15/etcd-v3.3.15-linux-amd64.tar.gz -o etcd-v3.3.15-linux-amd64.tar.gz \
+ && tar xzvf etcd-v3.3.15-linux-amd64.tar.gz \
+ && mv etcd-v3.3.15-linux-amd64 etcd
+
+RUN curl -L https://releases.hashicorp.com/consul/1.6.1/consul_1.6.1_linux_amd64.zip -o consul_1.6.1_linux_amd64.zip \
+ && unzip consul_1.6.1_linux_amd64.zip
